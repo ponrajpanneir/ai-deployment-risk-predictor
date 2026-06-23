@@ -96,12 +96,14 @@ async def github_webhook(request: Request):
     files_changed = []
 
     for commit in payload["commits"]:
+        files_changed.extend(commit.get("added", []))
         files_changed.extend(commit.get("modified", []))
+        files_changed.extend(commit.get("removed", []))
 
     return {
         "commit_id": commit_id,
         "branch": branch,
-        "files_changed": files_changed
+        "files_changed": list(set(files_changed))
     }
 
 @app.put("/deployment/{deployment_id}/result")
