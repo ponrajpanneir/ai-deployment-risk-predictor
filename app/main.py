@@ -90,37 +90,13 @@ async def github_webhook(request: Request):
 
     payload = await request.json()
 
-    commit_id = payload["head_commit"]["id"]
-
-    branch = payload["ref"].split("/")[-1]
-
-    files_changed = []
-
-    for commit in payload["commits"]:
-        files_changed.extend(commit.get("modified", []))
-
-    score, level, reasons = calculate_risk(files_changed)
-
-    prediction = DeploymentRisk(
-        commit_id=commit_id,
-        branch=branch,
-        files_changed=",".join(files_changed),
-        risk_score=score,
-        risk_level=level,
-        prediction_reason="; ".join(reasons)
-    )
-
-    db = next(get_db())
-
-    db.add(prediction)
-    db.commit()
+    print("========== WEBHOOK RECEIVED ==========")
+    print(payload)
 
     return {
-        "commit_id": commit_id,
-        "risk_score": score,
-        "risk_level": level
+        "status": "success"
     }
-    
+
 @app.put("/deployment/{deployment_id}/result")
 def update_result(
     deployment_id: int,
