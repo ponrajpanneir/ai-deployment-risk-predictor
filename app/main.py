@@ -90,11 +90,18 @@ async def github_webhook(request: Request):
 
     payload = await request.json()
 
-    print("========== WEBHOOK RECEIVED ==========")
-    print(payload)
+    commit_id = payload["head_commit"]["id"]
+    branch = payload["ref"].split("/")[-1]
+
+    files_changed = []
+
+    for commit in payload["commits"]:
+        files_changed.extend(commit.get("modified", []))
 
     return {
-        "status": "success"
+        "commit_id": commit_id,
+        "branch": branch,
+        "files_changed": files_changed
     }
 
 @app.put("/deployment/{deployment_id}/result")
