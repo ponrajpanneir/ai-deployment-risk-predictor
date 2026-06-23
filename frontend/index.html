@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Deployment Risk Predictor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>AI Deployment Risk Predictor</h1>
+
+    <input
+        type="text"
+        id="commit"
+        placeholder="Commit ID">
+
+    <input
+        type="text"
+        id="branch"
+        placeholder="Branch">
+
+    <textarea
+        id="files"
+        rows="8"
+        placeholder="auth/login.py
+database/config.py">
+    </textarea>
+
+    <button onclick="predictRisk()">
+        Predict Risk
+    </button>
+
+    <div id="result"></div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
